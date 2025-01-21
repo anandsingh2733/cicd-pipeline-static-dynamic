@@ -1,4 +1,4 @@
-version: 0.2
+version: 0.2  # Add the version key
 
 phases:
   install:
@@ -30,4 +30,4 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
+    - '**/*'  # Make sure this points to files that should be packaged for deployment
