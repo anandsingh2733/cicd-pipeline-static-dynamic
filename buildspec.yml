@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x  # Python runtime for Lambda
+    commands:
+      # Install dependencies if needed for Lambda
+      echo "Installing dependencies..."
+      pip install -r Dynamic/requirements.txt || true  # No dependencies here, but keep for future expansion.
+
+  pre_build:
+    commands:
+      echo "Preparing for deployment..."
+
+  build:
+    commands:
+      echo "Building files..."
+
+  post_build:
+    commands:
+      # Deploy static files to S3
+      echo "Deploying static files to S3..."
+      aws s3 sync Static/ s3://your-s3-bucket-name/ --delete
+      
+      # Deploy dynamic files to Lambda
+      echo "Deploying dynamic files to Lambda..."
+      zip -r dynamic.zip Dynamic/
+      aws lambda update-function-code --function-name your-lambda-function-name --zip-file fileb://dynamic.zip
+
+artifacts:
+  files:
+    - '**/*'
